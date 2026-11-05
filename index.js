@@ -20,9 +20,9 @@ function getServiceInfo() {
       discipline: 'ТГиОВ'
     },
     platform: {
-      provider: process.env.RENDER ? 'Render.com (Cloud PaaS)' : 'Localhost / PaaS-ready',
-      instanceId: process.env.RENDER_INSTANCE_ID || 'local-dev',
-      serviceId: process.env.RENDER_SERVICE_ID || 'local-service',
+      provider: process.env.RENDER ? 'Render.com (Cloud PaaS)' : (process.env.NETLIFY ? 'Netlify (Serverless PaaS)' : 'Localhost / PaaS-ready'),
+      instanceId: process.env.RENDER_INSTANCE_ID || (process.env.NETLIFY ? 'netlify-fn' : 'local-dev'),
+      serviceId: process.env.RENDER_SERVICE_ID || (process.env.SITE_NAME || 'local-service'),
       nodeVersion: process.version,
       environment: process.env.NODE_ENV || 'development'
     },
@@ -286,8 +286,14 @@ app.get('/health', (req, res) => {
   });
 });
 
-// Запуск HTTP-сервера
-app.listen(PORT, HOST, () => {
-  console.log(`[OK] Сервер успешно запущен на http://${HOST}:${PORT}`);
-  console.log(`[OK] Режим окружения: ${process.env.NODE_ENV || 'development'}`);
-});
+// Запуск HTTP-сервера при прямом вызове (локально или на Render)
+if (require.main === module) {
+  app.listen(PORT, HOST, () => {
+    console.log(`[OK] Сервер успешно запущен на http://${HOST}:${PORT}`);
+    console.log(`[OK] Режим окружения: ${process.env.NODE_ENV || 'development'}`);
+  });
+}
+
+// Экспорт для поддержки serverless функций (Netlify / Vercel / AWS Lambda)
+module.exports = app;
+
