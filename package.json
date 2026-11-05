@@ -1,0 +1,25 @@
+{
+  "name": "lab1-cloud-service",
+  "version": "1.0.0",
+  "description": "Лабораторная работа №1 по курсу ТГиОВ. Развертывание базовой инфраструктуры в облачной платформе Render (PaaS)",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node index.js"
+  },
+  "keywords": [
+    "paas",
+    "render",
+    "express",
+    "cloud",
+    "lab1"
+  ],
+  "author": "Student",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.21.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
